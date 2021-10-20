@@ -6,7 +6,6 @@ library(GGally)
 require(reshape2)
 
 finalDataVis <- finalData
-finalDataVis[,5] <- as.factor(as.character(finalData[,5]))
 finalDataVis[,1] <- as.factor(finalData[,1])
   TO.fig.small <- ggpairs(finalDataVis, aes(color=finalDataVis[,1]))+ theme_bw()
   for(i in 1:TO.fig.small$nrow) {

@@ -2,6 +2,7 @@
 ################################# PARTION DATA: TRAINING AND TESTING #########################################################
 library(caret)
 set.seed(555)
+finalData[,1] <- as.numeric(as.factor(finalData[,1]))
 #Spliting data as training and test set.
 indxTrain <- createDataPartition(y = finalData[,1],p = 0.75,list = FALSE)
 training <- finalData[indxTrain,]
@@ -72,23 +73,6 @@ resamples <- resamples(models)
 #densityplot(resamples, metric = "RMSE",auto.key = TRUE, pch = "|")
 
 
-library(tidyverse)
-library(hrbrthemes)
-library(viridis)
-ggplot(resamples, metric = resamples$metric[1])
-
-resamples %>% 
-  ggplot(resamples, metric = resamples$metric[1]) + geom_boxplot() +
-  scale_fill_viridis(discrete = TRUE, alpha=0.6) +
-  geom_jitter(color="black", size=0.4, alpha=0.9) +
-  theme_ipsum() +
-  theme(
-    legend.position="none",
-    plot.title = element_text(size=11)
-  ) 
-
-
-#, scales=list(cex=1.7)
 bw_RMSE <- bwplot(resamples,metric = "RMSE",col="blue",par.settings=list(box.rectangle=list(col="salmon", fill="salmon",alpha=0.4),box.umbrella=list(col="salmon",alpha=0.4),plot.symbol=list(col="salmon",alpha=0.4)))
 print(update(bw_RMSE),position=c(0,0,0.33,1))
 
@@ -116,7 +100,7 @@ print(update(difs_MAE), newpage=FALSE, position=c(0,0.32,1,0.68))
 difs_R2 <- levelplot(difs, what = "differences", tl.col="black",metric = "RMSE",col.regions=rainbow(100))
 print(update(difs_R2),newpage=FALSE, position=c(0,0.63,1,1))
 
-
+library(ggpubr)
 ggarrange(difs_RMSE, difs_MAE, difs_R2,ncol = 1, nrow = 3)
 
 
@@ -129,6 +113,14 @@ View(modelCor(resamples))
 
 
 set.seed(222)
+
+ensemble1<- caretEnsemble(models, 
+                          metric = "RMSE", 
+                          trControl = my_control)
+
+ensemble1<- caretEnsemble(models[-c(4,6,14,16)], 
+                                metric = "RMSE", 
+                                trControl = my_control)
 
 # Built the best ML model
 ensemble1.RMSE <- caretEnsemble(models[-c(4,6,14,16)], 

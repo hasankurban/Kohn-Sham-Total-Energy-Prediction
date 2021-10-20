@@ -24,7 +24,5 @@ colnames(finalData)[3] <- "y"
 colnames(finalData)[4] <- "z"
 colnames(finalData)[5] <- "Temperature"
 colnames(finalData)[6] <- "Energy"
-library(dplyr)
-#finalData <- finalData %>% mutate(across(where(is.numeric), ~ round(., 1)))
-#finalData[,1] <- as.numeric(as.factor(finalData[,1]))
+
   
