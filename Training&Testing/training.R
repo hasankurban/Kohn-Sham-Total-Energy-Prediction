@@ -72,6 +72,7 @@ resamples <- resamples(models)
 #dotplot(resamples, metric = "Rsquared")
 #densityplot(resamples, metric = "RMSE",auto.key = TRUE, pch = "|")
 
+library(ggpubr)
 
 bw_RMSE <- bwplot(resamples,metric = "RMSE",col="blue",par.settings=list(box.rectangle=list(col="salmon", fill="salmon",alpha=0.4),box.umbrella=list(col="salmon",alpha=0.4),plot.symbol=list(col="salmon",alpha=0.4)))
 print(update(bw_RMSE),position=c(0,0,0.33,1))
@@ -103,9 +104,10 @@ print(update(difs_R2),newpage=FALSE, position=c(0,0.63,1,1))
 library(ggpubr)
 ggarrange(difs_RMSE, difs_MAE, difs_R2,ncol = 1, nrow = 3)
 
-
+library(caretEnsemble)
 library(corrplot)
 library(xtable)
+library(caret)
 corTable <- modelCor(resamples)
 print(xtable(corTable, type = "latex"), file = "corTable.tex")
 corrplot(corTable, order="hclust", method = "color",tl.col = "black")
@@ -113,25 +115,21 @@ View(modelCor(resamples))
 
 
 set.seed(222)
-
-ensemble1<- caretEnsemble(models, 
-                          metric = "RMSE", 
-                          trControl = my_control)
-
-ensemble1<- caretEnsemble(models[-c(4,6,14,16)], 
-                                metric = "RMSE", 
-                                trControl = my_control)
-
-# Built the best ML model
-ensemble1.RMSE <- caretEnsemble(models[-c(4,6,14,16)], 
-                            metric = "RMSE", 
-                            trControl = my_control)
-ensemble1.MAE <- caretEnsemble(models[-c(4,6,14,16)], 
-                           metric = "MAE", 
-                           trControl = my_control)
-ensemble1.R2 <- caretEnsemble(models[-c(4,6,14,16)], 
-                           metric = "Rsquared", 
-                           trControl = my_control)
+  
+  ensemble1 <- caretEnsemble(models[-c(1,2,7)], 
+                                  metric = "RMSE", 
+                                  trControl = my_control)
+  
+  # Built the best ML model
+  ensemble1.RMSE <- caretEnsemble(models[-c(1,2,7)], 
+                                  metric = "RMSE", 
+                                  trControl = my_control)
+  ensemble1.MAE <- caretEnsemble(models[-c(1,2,7)], 
+                                 metric = "RMSE", 
+                                 trControl = my_control)
+  ensemble1.R2 <-caretEnsemble(models[-c(1,2,7)], 
+                               metric = "RMSE", 
+                               trControl = my_control)
 #library(gridExtra)
 #library(ggpubr)
 

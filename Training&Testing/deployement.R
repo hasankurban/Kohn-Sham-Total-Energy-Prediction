@@ -1,2 +1,19 @@
-saveRDS(ensemble1, "ensemble1.rds")
-bestModel <- readRDS("ensemble1.rds")
+saveRDS(ensemble1, "ensemble1.rds") #best model
+saveRDS(models$lm, "lm.rds")
+saveRDS(models$glm, "glm.rds")
+saveRDS(models$rf, "rf.rds")
+saveRDS(models$xgbDART, "xgbDART.rds")
+saveRDS(models$xgbLinear, "xgbLinear.rds")
+saveRDS(models$xgbTree, "xgbTree.rds")
+saveRDS(models$lmStepAIC, "lmStepAIC.rds")
+saveRDS(models$monmlp, "monmlp.rds")
+saveRDS(models$gcvEarth, "gcvEarth.rds")
+saveRDS(models$ppr, "ppr.rds")
+saveRDS(models$svmLinear, "svmLinear.rds")
+saveRDS(models$svmRadial, "svmRadial.rds")
+saveRDS(models$knn, "knn.rds")
+saveRDS(models$icr, "icr.rds")
+saveRDS(models$gaussprLinear, "gaussprLinear.rds")
+saveRDS(models$rpart, "rpart.rds")
+
+
