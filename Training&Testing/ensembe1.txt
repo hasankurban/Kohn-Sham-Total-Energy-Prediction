@@ -1,0 +1,130 @@
+> ensemble1
+A glm ensemble of 13 base models: rf, xgbDART, xgbLinear, xgbTree, monmlp, gcvEarth, ppr, svmLinear, svmRadial, knn, icr, gaussprLinear, rpart
+
+Ensemble results:
+Generalized Linear Model 
+
+4221 samples
+  13 predictor
+
+No pre-processing
+Resampling: Cross-Validated (10 fold) 
+Summary of sample sizes: 3798, 3800, 3800, 3798, 3799, 3800, ... 
+Resampling results:
+
+  RMSE          Rsquared   MAE         
+  1.491769e-05  0.9999999  7.568457e-06
+  
+ ##################################################################################
+> summary(ensemble1)
+The following models were ensembled: rf, xgbDART, xgbLinear, xgbTree, monmlp, gcvEarth, ppr, svmLinear, svmRadial, knn, icr, gaussprLinear, rpart 
+They were weighted: 
+-0.0023 0.0098 0.0484 0.0604 0.0062 -0.0033 -6e-04 0.8791 -0.0029 1e-04 -1e-04 0 0.0029 0
+The resulting RMSE is: 0
+The fit for each individual model on the RMSE is: 
+        method         RMSE       RMSESD
+            rf 1.685174e-04 1.540095e-05
+       xgbDART 7.026079e-05 4.053802e-05
+     xgbLinear 6.349319e-05 6.618493e-06
+       xgbTree 1.253854e-04 2.261406e-05
+        monmlp 8.140654e-04 4.643750e-05
+      gcvEarth 2.421301e-03 6.413739e-05
+           ppr 1.596204e-05 4.939737e-06
+     svmLinear 5.449339e-03 8.191349e-05
+     svmRadial 4.113000e-03 9.711397e-05
+           knn 6.605006e-03 2.828368e-04
+           icr 1.827403e-02 8.174969e-03
+ gaussprLinear 5.050706e-03 1.003584e-04
+         rpart 1.943515e-02 4.703794e-03
+##################################################################################
+
+> varImp(ensemble1)
+            overall           rf      xgbDART xgbLinear      xgbTree       monmlp
+Atom Type       NaN 0.000000e+00 0.000000e+00         0 0.000000e+00  0.005129193
+x               NaN 8.959395e-15 1.372762e-05         0 1.225699e-04  0.036489752
+y               NaN 8.858522e-15 6.753127e-05         0 3.415037e-05  0.000000000
+z               NaN 8.727254e-15 0.000000e+00         0 0.000000e+00  0.044878959
+Temperature     NaN 1.000000e+02 9.999992e+01       100 9.999984e+01 99.913502096
+                NaN 0.000000e+00 0.000000e+00         0 0.000000e+00  0.000000000
+`Atom Type`     NaN 0.000000e+00 0.000000e+00         0 0.000000e+00  0.000000000
+            gcvEarth          ppr    svmLinear    svmRadial          knn
+Atom Type        NaN  0.005129193  0.005129193  0.005129193  0.005129193
+x                NaN  0.036489752  0.036489752  0.036489752  0.036489752
+y                NaN  0.000000000  0.000000000  0.000000000  0.000000000
+z                NaN  0.044878959  0.044878959  0.044878959  0.044878959
+Temperature      NaN 99.913502096 99.913502096 99.913502096 99.913502096
+                 NaN  0.000000000  0.000000000  0.000000000  0.000000000
+`Atom Type`      NaN  0.000000000  0.000000000  0.000000000  0.000000000
+                     icr gaussprLinear        rpart
+Atom Type    0.005129193   0.005129193  0.005848747
+x            0.036489752   0.036489752  0.183804798
+y            0.000000000   0.000000000  0.231485000
+z            0.044878959   0.044878959  0.224700858
+Temperature 99.913502096  99.913502096 99.354160597
+             0.000000000   0.000000000  0.000000000
+`Atom Type`  0.000000000   0.000000000  0.000000000
+             
+##################################################################################
+             
+print(pred_testing_RMSE)
+    ensemble_1      LM       RF  XGBDART     GLM LMSTEPAIC   MONMLP GVCEARTH      PPR
+1 1.049597e-05 64.0847 64.17815 64.20274 64.0847   64.0847 64.12709 64.06591 64.15308
+  SVMLINEAR SVMRADIAL      KNN  XGBTREE XGBLINEAR         ICR GAUSSLINEAR      RPART
+1        NA        NA 64.13303 64.20804  64.20599 0.006759704  0.00493663 0.02256024
+
+
+> print(pred_testing_MAE)
+    ensemble_1       LM       RF  XGBDART      GLM LMSTEPAIC   MONMLP GVCEARTH
+1 4.118033e-06 63.85917 63.81597 63.83001 63.85917  63.85917 63.81816 63.82897
+       PPR SVMLINEAR SVMRADIAL      KNN  XGBTREE XGBLINEAR        ICR GAUSSLINEAR
+1 63.83741        NA        NA 63.77532 63.83776  63.83355 0.00549045   0.0042576
+      RPART
+1 0.0185855
+
+
+         ensemble_1 LM RF XGBDART GLM LMSTEPAIC MONMLP GVCEARTH PPR SVMLINEAR
+Rsquared          1 NA NA      NA  NA        NA     NA       NA  NA        NA
+         SVMRADIAL KNN XGBTREE XGBLINEAR       ICR GAUSSLINEAR     RPART
+Rsquared        NA  NA      NA        NA 0.9890285   0.9941612 0.8781929
+
+##################################################################################
+
+> #Understanding the best models and hybrid models
+> models$lm$finalModel
+
+Call:
+lm(formula = .outcome ~ ., data = dat)
+
+Coefficients:
+(Intercept)  `Atom Type`            x            y            z  Temperature  
+ -7.178e+01    8.655e-06    5.717e-05    1.625e-05   -4.379e-05    6.406e-02  
+
+> models$ppr$finalModel
+Call:
+ppr(x = as.matrix(x), y = y, nterms = param$nterms)
+
+Goodness of fit:
+3 terms 
+      0 
+> models$xgbLinear$finalModel
+##### xgb.Booster
+Handle is invalid! Suggest using xgb.Booster.complete
+raw: 25.3 Kb 
+call:
+  xgboost::xgb.train(params = list(lambda = param$lambda, alpha = param$alpha), 
+    data = x, nrounds = param$nrounds, objective = "reg:linear")
+params (as set within xgb.train):
+  lambda = "1e-04", alpha = "0", objective = "reg:linear", validate_parameters = "TRUE"
+callbacks:
+  cb.print.evaluation(period = print_every_n)
+# of features: 5 
+niter: 50
+nfeatures : 5 
+xNames : Atom Type x y z Temperature 
+problemType : Regression 
+tuneValue :
+	   nrounds lambda alpha eta
+10      50  1e-04     0 0.3
+obsLevels : NA 
+param :
+	list()

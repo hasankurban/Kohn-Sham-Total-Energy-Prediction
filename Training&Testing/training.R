@@ -125,10 +125,10 @@ set.seed(222)
                                   metric = "RMSE", 
                                   trControl = my_control)
   ensemble1.MAE <- caretEnsemble(models[-c(1,2,7)], 
-                                 metric = "RMSE", 
+                                 metric = "MAE", 
                                  trControl = my_control)
   ensemble1.R2 <-caretEnsemble(models[-c(1,2,7)], 
-                               metric = "RMSE", 
+                               metric = "Rsquared", 
                                trControl = my_control)
 #library(gridExtra)
 #library(ggpubr)
